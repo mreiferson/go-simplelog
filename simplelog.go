@@ -11,7 +11,7 @@ const (
 	DEBUG = iota
 	INFO
 	WARNING
-	CRITICAL
+	ERROR
 )
 
 const (
@@ -59,9 +59,9 @@ func (l *Logger) Log(level int, s string, args ...interface{}) {
 		case WARNING:
 			color = yellow
 			levelTxt = "WARNING"
-		case CRITICAL:
+		case ERROR:
 			color = red
-			levelTxt = "CRITICAL"
+			levelTxt = "ERROR"
 		}
 
 		dt := time.Now()
@@ -88,8 +88,8 @@ func (l *Logger) Warning(s string, args ...interface{}) {
 	l.Log(WARNING, s, args...)
 }
 
-func (l *Logger) Critical(s string, args ...interface{}) {
-	l.Log(CRITICAL, s, args...)
+func (l *Logger) Error(s string, args ...interface{}) {
+	l.Log(ERROR, s, args...)
 }
 
 func SetLevel(level int) {
@@ -108,8 +108,8 @@ func Warning(s string, args ...interface{}) {
 	defaultLogger.Warning(s, args...)
 }
 
-func Critical(s string, args ...interface{}) {
-	defaultLogger.Critical(s, args...)
+func Error(s string, args ...interface{}) {
+	defaultLogger.Error(s, args...)
 }
 
 func Log(level int, s string, args ...interface{}) {
