@@ -1,9 +1,11 @@
 package simplelog
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"sync"
+	"strings"
 	"time"
 )
 
@@ -37,8 +39,27 @@ func NewLogger(level int) *Logger {
 	return &Logger{level: level}
 }
 
-func (l *Logger) SetLevel(level int) {
-	l.level = level
+func (l *Logger) SetLevel(lvl interface{}) error {
+	switch lvl.(type) {
+	case int:
+		l.level = lvl.(int)
+	case string:
+		switch strings.ToLower(lvl.(string)) {
+		case "debug":
+			l.level = DEBUG
+		case "info":
+			l.level = INFO
+		case "warning":
+			l.level = WARNING
+		case "error":
+			l.level = ERROR
+		default:
+			return errors.New("invalid level")
+		}
+	default:
+		return errors.New("invalid level")
+	}
+	return nil
 }
 
 func (l *Logger) Log(level int, s string, args ...interface{}) {
@@ -76,40 +97,24 @@ func (l *Logger) Log(level int, s string, args ...interface{}) {
 	}
 }
 
-func (l *Logger) Debug(s string, args ...interface{}) {
-	l.Log(DEBUG, s, args...)
-}
-
-func (l *Logger) Info(s string, args ...interface{}) {
-	l.Log(INFO, s, args...)
-}
-
-func (l *Logger) Warning(s string, args ...interface{}) {
-	l.Log(WARNING, s, args...)
-}
-
-func (l *Logger) Error(s string, args ...interface{}) {
-	l.Log(ERROR, s, args...)
-}
-
-func SetLevel(level int) {
-	defaultLogger.SetLevel(level)
+func SetLevel(lvl interface{}) {
+	defaultLogger.SetLevel(lvl)
 }
 
 func Debug(s string, args ...interface{}) {
-	defaultLogger.Debug(s, args...)
+	defaultLogger.Log(DEBUG, s, args...)
 }
 
 func Info(s string, args ...interface{}) {
-	defaultLogger.Info(s, args...)
+	defaultLogger.Log(INFO, s, args...)
 }
 
 func Warning(s string, args ...interface{}) {
-	defaultLogger.Warning(s, args...)
+	defaultLogger.Log(WARNING, s, args...)
 }
 
 func Error(s string, args ...interface{}) {
-	defaultLogger.Error(s, args...)
+	defaultLogger.Log(ERROR, s, args...)
 }
 
 func Log(level int, s string, args ...interface{}) {
