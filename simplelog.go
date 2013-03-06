@@ -48,7 +48,7 @@ func (l *Logger) Log(level int, s string, args ...interface{}) {
 	var levelTxt string
 	var color string
 
-	if l.level >= level {
+	if level >= l.level {
 		switch level {
 		case DEBUG:
 			color = blue
