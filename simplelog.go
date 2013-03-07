@@ -1,5 +1,5 @@
-// `simplelog` is Golang package to replace the standard library's `log` adding logging
-// level, colors, and an easy to read format modeled after [Tornado][tornado].
+// simplelog is Golang package to replace the standard library's log adding logging
+// level, colors, and an easy to read format modeled after Tornado (http://tornadoweb.org/)
 // 
 // It is and designed to be usable out of the box with no dependencies.
 package simplelog
