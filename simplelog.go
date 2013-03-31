@@ -114,7 +114,7 @@ func (l *Logger) Log(level int, s string, args ...interface{}) {
 		dt.Nanosecond()/1e3)
 
 	logMsg := fmt.Sprintf(s, args...)
-	fmt.Fprintf(os.Stderr, "%s[%s %s] %s%s\n", prefix, levelTxt, dateTime, logMsg, postfix)
+	fmt.Fprintf(os.Stderr, "%s[%s %s]%s %s\n", prefix, levelTxt, dateTime, postfix, logMsg)
 }
 
 // SetLevel sets the logging level for the default (global) logger
